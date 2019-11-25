@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Ledger</string>
     <string name="action_settings">Settings</string>
+    <string name="enter_cost_hint">Enter Cost</string>
+    <string name="what_is_it_for">What is it for</string>
+    <string name="description">Description:</string>
+    <string name="finish">FINISH</string>
 </resources>
