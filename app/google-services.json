@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "382067777052",
+    "firebase_url": "https://android-expense-groups.firebaseio.com",
+    "project_id": "android-expense-groups",
+    "storage_bucket": "android-expense-groups.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382067777052:android:041048d299754ced3949d9",
+        "android_client_info": {
+          "package_name": "com.example.ledger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382067777052-amj55mlj7d39ngflgf6n1hecaalb49jb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ledger",
+            "certificate_hash": "65eb3b9f1401d829cd05fb59749f2ac3474c8b76"
+          }
+        },
+        {
+          "client_id": "382067777052-a062ifm8p877dlqvgvculon1u7jba3rb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkwHhD1YdB91E9Ht_NRfFViZVle_D_y-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382067777052-a062ifm8p877dlqvgvculon1u7jba3rb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
