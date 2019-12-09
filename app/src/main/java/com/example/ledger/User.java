@@ -2,22 +2,16 @@ package com.example.ledger;
 
 public class User {
     private String username;
-    private String name;
-    public User(){
+    private String email;
+
+    public User() {
         username = "username";
-        name = "name";
-    }
-    public User(String paramUsername, String paramName){
-        this.username = paramUsername;
-        this.name = paramName;
+        email = "name";
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public User(String username, String email) {
+        this.username = username;
+        this.email = email;
     }
 
     public String getUsername() {
@@ -26,5 +20,13 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

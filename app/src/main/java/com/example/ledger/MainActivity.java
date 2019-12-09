@@ -21,6 +21,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -44,11 +47,9 @@ public class MainActivity extends AppCompatActivity {
     static final String TAG = "MainActivityTag";
     static final int SIGN_IN_REQUEST = 1;
     static final int LOGIN_REQUEST_CODE = 1;
-    String userName = "Anonymous";
-    SignInButton signInButton;
-    Button signOutButton;
-    TextView statusTextView;
-    GoogleSignInClient mGoogleSignInClient;
+    private String userName = "Anonymous";
+    private String email = "Anonymous";
+    ChildEventListener usersAddedListener;
     private static final int RC_SIGN_IN = 1;
     private FirebaseAuth mAuth;
     FirebaseAuth mFirebaseAuth;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseDatabase mFirebaseDataBase;
     DatabaseReference databaseReference;
     private Cost newCost;
+    private User signedInUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +82,34 @@ public class MainActivity extends AppCompatActivity {
     }
     private void setupFirebase(){
         mFirebaseDataBase = FirebaseDatabase.getInstance();
-        databaseReference = mFirebaseDataBase.getReference();
+        databaseReference = mFirebaseDataBase.getReference().child("users");
+        usersAddedListener = new ChildEventListener(){
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "user: " + signedInUser.getEmail());
+                User user = dataSnapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -120,6 +149,11 @@ public class MainActivity extends AppCompatActivity {
     private void setupSignedInUser(FirebaseUser user) {
         // get the user's name
         userName = user.getDisplayName();
+        email =  user.getEmail();
+        signedInUser.setUsername(userName);
+        signedInUser.setEmail(email);
+        databaseReference.addChildEventListener(usersAddedListener);
+        databaseReference.push().setValue(signedInUser);
         // listen for database changes with childeventlistener
         // wire it up!
         //mMessagesDatabaseReference
@@ -162,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SIGN_IN_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(this, "You are now signed in", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "You are now signed in", Toast.LENGTH_SHORT).show();
 
             }
             else if (resultCode == Activity.RESULT_CANCELED) {
@@ -171,10 +205,10 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         }
-        if(data != null){
+        /*if(data != null){
             newCost = (Cost)data.getSerializableExtra("cost");
             Log.d(TAG, "Cost amount: " + newCost.getAmountCost()+ " Description: " + newCost.getCostDescription());
-        }
+        }*/
     }
 }
 
