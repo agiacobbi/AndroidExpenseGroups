@@ -9,6 +9,11 @@
         android:title="@string/action_settings"
         app:showAsAction="ifRoom" />
     <item
+        android:id = "@+id/createGroup"
+        android:icon = "@drawable/ic_add_black_24dp"
+        android:title="Create Group"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/action_signout"
         android:orderInCategory="100"
         android:title="Sign Out"

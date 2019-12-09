@@ -43,6 +43,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     static final String TAG = "MainActivityTag";
     static final int SIGN_IN_REQUEST = 1;
+    static final int LOGIN_REQUEST_CODE = 1;
     String userName = "Anonymous";
     SignInButton signInButton;
     Button signOutButton;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth.AuthStateListener mAuthStateListener;
     FirebaseDatabase mFirebaseDataBase;
     DatabaseReference databaseReference;
+    private Cost newCost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +68,12 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        //.setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, LogCost.class);
+                startActivityForResult(intent, LOGIN_REQUEST_CODE);
+                Log.d(TAG, "in fab button listener");
+
             }
         });
         setupFirebase();
@@ -135,14 +141,21 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_signout:
+                AuthUI.getInstance().signOut(this);
+                return true;
+            case R.id.createGroup:
+                Intent intent = new Intent(MainActivity.this, CreateGroupActivity.class);
+                startActivityForResult(intent, LOGIN_REQUEST_CODE);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        else if (id == R.id.action_signout){
-            AuthUI.getInstance().signOut(this);
-        }
-        return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -157,6 +170,10 @@ public class MainActivity extends AppCompatActivity {
                 // let's exit
                 finish();
             }
+        }
+        if(data != null){
+            newCost = (Cost)data.getSerializableExtra("cost");
+            Log.d(TAG, "Cost amount: " + newCost.getAmountCost()+ " Description: " + newCost.getCostDescription());
         }
     }
 }
