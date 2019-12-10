@@ -17,6 +17,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         final EditText groupName = (EditText)findViewById(R.id.createGroupName);
 
+        //need to find a way to invite members
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
         Button createButton = (Button)findViewById(R.id.createButton);
