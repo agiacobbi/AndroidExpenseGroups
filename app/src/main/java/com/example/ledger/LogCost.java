@@ -41,8 +41,7 @@ public class LogCost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_cost);
-        Intent intent = new Intent();
-
+        final Intent intent = new Intent();
 
         Spinner groupSelect = findViewById(R.id.group_selector);
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -56,6 +55,13 @@ public class LogCost extends AppCompatActivity {
                 groupsList
         );
         groupSelect.setAdapter(adapter);
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LogCost.this.finish();
+            }
+        });
 
 
         groupInRef.orderByKey().equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -91,13 +97,7 @@ public class LogCost extends AppCompatActivity {
                 EditText userDescription = findViewById(R.id.cost_description);
                 Spinner spinner = findViewById(R.id.group_selector);
                 Log.d(TAG, "in finishLogListener");
-                Button backButton = findViewById(R.id.backButton);
-                backButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        LogCost.this.finish();
-                    }
-                });
+
 
 
                 if (userInputCost.getText().toString().equals("") || userDescription.getText().toString().equals("")) {
@@ -116,6 +116,7 @@ public class LogCost extends AppCompatActivity {
                     insertRef.push().setValue(cost);
 
                     LogCost.this.finish();
+
                 }
             }
         });
