@@ -26,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,10 +37,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     private Cost newCost;
     private User signedInUser = new User();
+    ArrayAdapter adapter;
+    List<String> groupIdList;
+    List<Cost> costList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +89,99 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
         setupFirebase();
+        populateListView();
     }
+
+    private void populateListView() {
+        ListView costListView = findViewById(R.id.expensesList);
+        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference groupInRef = reference.child("group-in");
+        groupIdList = new ArrayList<>();
+        costList = new ArrayList<>();
+
+        adapter = new ArrayAdapter<Cost>(
+                this,
+                android.R.layout.simple_list_item_2,
+                android.R.id.text1,
+                costList) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                // inflates simple_list_item_1 for this position contact
+
+                Cost cost = costList.get(position);
+                // set value(s) for the view and its subviews
+                TextView tv1 = view.findViewById(android.R.id.text1);
+                tv1.setText(cost.getUser()); // cloning what ArrayAdapter has been doing for us
+
+                // task: set the name for text1 and set the phone number for text2
+                TextView tv2 = view.findViewById(android.R.id.text2);
+                DecimalFormat df = new DecimalFormat("$0.00");
+                tv2.setText(df.format(cost.getAmountCost()));
+
+                return view;
+            }
+        };
+        costListView.setAdapter(adapter);
+
+        groupInRef.orderByKey().equalTo(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot s: dataSnapshot.getChildren()) {
+                        for (DataSnapshot g : s.getChildren()) {
+                            System.out.println("ADDING: " + g.getKey());
+                            groupIdList.add(g.getKey());
+                        }
+                    }
+                }
+
+                fillCosts();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void fillCosts() {
+        DatabaseReference costRef = FirebaseDatabase.getInstance().getReference().child("cost");
+        costRef.orderByKey().limitToFirst(50).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+                    System.out.println("LOADING COSTS");
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        if (groupIdList.contains(s.getKey())) {
+                            for (DataSnapshot cost : s.getChildren()) {
+                                double val = Double.parseDouble(cost.child("amountCost").getValue().toString());
+                                String desc = cost.child("costDescription").getValue().toString();
+                                String user = cost.child("user").getValue().toString();
+                                costList.add(new Cost(val, desc, user));
+                                adapter.notifyDataSetChanged();
+                                System.out.println("NOTIFIED");
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     private void setupFirebase(){
         mFirebaseDataBase = FirebaseDatabase.getInstance();
         databaseReference = mFirebaseDataBase.getReference().child("users");
