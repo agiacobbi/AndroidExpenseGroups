@@ -317,15 +317,10 @@ public class MainActivity extends AppCompatActivity {
             else if (resultCode == Activity.RESULT_CANCELED) {
                 // they backed out of the sign in activity
                 // let's exit
-                finish();
+                //finish();
             }
         }
-        //Does not work after user signs in
-        //trying to get data from cost
-        /*if(data != null){
-            newCost = (Cost)data.getSerializableExtra("cost");
-            Log.d(TAG, "Cost amount: " + newCost.getAmountCost()+ " Description: " + newCost.getCostDescription());
-        }*/
+
     }
 }
 
