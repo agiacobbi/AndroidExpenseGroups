@@ -184,11 +184,16 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.createGroup:
                 Intent intent = new Intent(MainActivity.this, CreateGroupActivity.class);
-                startActivityForResult(intent, LOGIN_REQUEST_CODE);
+                startActivity(intent);
                 return true;
             case R.id.action_viewgroups:
                 Intent viewIntent = new Intent(MainActivity.this, ViewAllGroupsActivity.class);
                 startActivity(viewIntent);
+                return true;
+            case R.id.action_joingroup:
+                Intent joinIntent = new Intent(MainActivity.this, JoinGroupActivity.class);
+                startActivity(joinIntent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
