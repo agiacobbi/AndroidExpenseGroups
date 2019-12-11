@@ -33,6 +33,7 @@ public class ViewGroupActivity extends AppCompatActivity {
     String groupId;
     Map<String, Double> amountOwed;
     List<Cost> expenseList = new ArrayList<>();
+    Map<String, String> userCodeDisplayMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +69,30 @@ public class ViewGroupActivity extends AppCompatActivity {
         currentUserName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         memberSpending = new HashMap<>();
         amountOwed = new HashMap<>();
+        userCodeDisplayMap = new HashMap<>();
 
+        DatabaseReference usersInGroupRef = FirebaseDatabase.getInstance().getReference().child("in-group");
+        usersInGroupRef.child(groupId).orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        userCodeDisplayMap.put(s.getKey(), s.getValue().toString());
+                        memberSpending.put(s.getKey(), 0.0);
+                    }
+                }
+                sumCosts();
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void sumCosts() {
         DatabaseReference costRef = FirebaseDatabase.getInstance().getReference().child("cost");
         costRef.orderByKey().equalTo(groupId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -78,13 +101,9 @@ public class ViewGroupActivity extends AppCompatActivity {
                     for (DataSnapshot s : dataSnapshot.getChildren()) {
                         for (DataSnapshot cost : s.getChildren()) {
                             double amt = Double.parseDouble(cost.child("amountCost").getValue().toString());
-                            String uid = cost.child("user").getValue().toString();
+                            String uid = cost.child("userId").getValue().toString();
                             System.out.println("putting " + amt);
-                            if (memberSpending.containsKey(uid)) {
-                                memberSpending.put(uid, memberSpending.get(uid) + amt);
-                            } else {
-                                memberSpending.put(uid, amt);
-                            }
+                            memberSpending.put(uid, memberSpending.get(uid) + amt);
                         }
                     }
                 }
@@ -102,8 +121,8 @@ public class ViewGroupActivity extends AppCompatActivity {
         int numMembers = memberSpending.size();
         System.out.println(memberSpending);
         for (String user : memberSpending.keySet()) {
-            if (!user.equals(currentUserName)) {
-                double balanceOwed = (memberSpending.get(user) / numMembers) - (memberSpending.get(currentUserName) / numMembers);
+            if (!user.equals(currentUserId)) {
+                double balanceOwed = (memberSpending.get(user) / numMembers) - (memberSpending.get(currentUserId) / numMembers);
                 amountOwed.put(user, balanceOwed);
             }
         }
@@ -120,9 +139,9 @@ public class ViewGroupActivity extends AppCompatActivity {
         for (String k : amountOwed.keySet()) {
             overallBalance += amountOwed.get(k);
             if (amountOwed.get(k) > 0) {
-                messages.add("You owe " + k + " " + df.format(amountOwed.get(k)));
+                messages.add("You owe " + userCodeDisplayMap.get(k) + " " + df.format(amountOwed.get(k)));
             } else {
-                messages.add(k + " owes you " + df.format((-1 * amountOwed.get(k))));
+                messages.add(userCodeDisplayMap.get(k) + " owes you " + df.format((-1 * amountOwed.get(k))));
             }
         }
 
