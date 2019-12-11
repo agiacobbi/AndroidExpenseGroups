@@ -39,12 +39,14 @@ public class JoinGroupActivity extends AppCompatActivity {
         final String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         final String groupKey = newGroupRef.getKey();
         Button backButton = findViewById(R.id.backButton);
+        Button joinButton = findViewById(R.id.joinGroup);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 JoinGroupActivity.this.finish();
             }
         });
+
 
         groupEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -71,7 +73,7 @@ public class JoinGroupActivity extends AppCompatActivity {
                                 groupInRef.child(userId).child(groupKey).setValue(dataSnapshot.child(groupKey).child("groupName").getValue().toString());
                             }
                         } else {
-                            existsNote.setText("Invalid group code");
+                            //existsNote.setText("Invalid group code");
                         }
                     }
 
@@ -106,6 +108,5 @@ public class JoinGroupActivity extends AppCompatActivity {
 
             }
         });
-
     }
 }
