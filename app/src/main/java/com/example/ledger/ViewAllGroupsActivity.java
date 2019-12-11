@@ -3,6 +3,7 @@ package com.example.ledger;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Adapter;
@@ -24,6 +25,7 @@ import java.util.List;
 
 public class ViewAllGroupsActivity extends AppCompatActivity {
     List<String> groupsList = new ArrayList<>();
+    List<String> groupIdList = new ArrayList<>();
     ArrayAdapter adapter;
 
 
@@ -52,6 +54,7 @@ public class ViewAllGroupsActivity extends AppCompatActivity {
                         for (DataSnapshot g : s.getChildren()) {
                             System.out.println("ADDING: " + g.getValue().toString());
                             groupsList.add(g.getValue().toString());
+                            groupIdList.add(g.getKey());
                             System.out.println(groupsList.toString());
                             adapter.notifyDataSetChanged();
                         }
@@ -68,7 +71,10 @@ public class ViewAllGroupsActivity extends AppCompatActivity {
         groupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // load view group on item click
+                Intent intent = new Intent(ViewAllGroupsActivity.this, ViewGroupActivity.class);
+                intent.putExtra("groupId", groupIdList.get(i));
+
+                startActivity(intent);
             }
         });
     }

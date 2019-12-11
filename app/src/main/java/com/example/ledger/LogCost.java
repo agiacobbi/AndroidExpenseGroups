@@ -103,6 +103,7 @@ public class LogCost extends AppCompatActivity {
                     cost.setAmountCost(costAmount);
                     cost.setCostDescription(userDescription.getText().toString());
                     cost.setUser(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                    cost.setUserId(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                     DatabaseReference insertRef = FirebaseDatabase.getInstance().getReference().child("cost").child(groupInsertId);
                     insertRef.push().setValue(cost);

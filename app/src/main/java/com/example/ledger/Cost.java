@@ -6,6 +6,7 @@ public class Cost implements Serializable {
     private double amountCost;
     private String costDescription;
     private String user;
+    private String userId;
 
     public Cost(){
         this.amountCost = 0.0;
@@ -14,6 +15,21 @@ public class Cost implements Serializable {
     public Cost(double amountCost, String costDescription) {
         this.amountCost = amountCost;
         this.costDescription = costDescription;
+    }
+
+    public Cost(double amountCost, String costDescription, String user, String userId) {
+        this.amountCost = amountCost;
+        this.costDescription = costDescription;
+        this.user = user;
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUser() {
