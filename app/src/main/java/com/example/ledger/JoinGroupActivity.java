@@ -21,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 
 
 public class JoinGroupActivity extends AppCompatActivity {
+    String groupName = "";
+    String groupKey = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +39,25 @@ public class JoinGroupActivity extends AppCompatActivity {
         final DatabaseReference newGroupRef = inGroupRef.push();
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        final String groupKey = newGroupRef.getKey();
-        Button backButton = findViewById(R.id.backButton);
-        Button joinButton = findViewById(R.id.joinGroup);
+
+
+        final Button joinButton = findViewById(R.id.joinGroup);
+        joinButton.setEnabled(false);
+        final Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 JoinGroupActivity.this.finish();
+            }
+        });
+
+        joinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                inGroupRef.child(groupKey).child(userId).setValue(userName);
+                groupInRef.child(userId).child(groupKey).setValue(groupName);
+                System.out.println(groupName);
+                finish();
             }
         });
 
@@ -57,6 +71,7 @@ public class JoinGroupActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 final String groupKey = groupEditText.getText().toString();
+                JoinGroupActivity.this.groupKey = groupKey;
                 DatabaseReference groupCheck = reference.child("group");
                 final DatabaseReference inGroup = reference.child("group-in");
                 final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -67,13 +82,21 @@ public class JoinGroupActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         boolean groupExists = false;
                         if (dataSnapshot.exists()) {
+                            existsNote.setText("");
                             alreadyInGroup();
                             if (!isInGroup) {
-                                inGroupRef.child(groupKey).child(userId).setValue(userName);
-                                groupInRef.child(userId).child(groupKey).setValue(dataSnapshot.child(groupKey).child("groupName").getValue().toString());
+                                  joinButton.setEnabled(true);
+                                  groupName = dataSnapshot.child(groupKey).child("groupName").getValue().toString();
+//                                inGroupRef.child(groupKey).child(userId).setValue(userName);
+//                                groupInRef.child(userId).child(groupKey).setValue(dataSnapshot.child(groupKey).child("groupName").getValue().toString());
+                            } else {
+                                joinButton.setEnabled(false);
                             }
                         } else {
+
                             //existsNote.setText("Invalid group code");
+                            existsNote.setText("Invalid group code");
+                            joinButton.setEnabled(false);
                         }
                     }
 
