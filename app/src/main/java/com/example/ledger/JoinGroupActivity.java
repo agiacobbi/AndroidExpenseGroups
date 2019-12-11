@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 public class JoinGroupActivity extends AppCompatActivity {
 
     @Override
@@ -23,9 +25,17 @@ public class JoinGroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_group);
 
+
         final EditText groupEditText = findViewById(R.id.joinGroupText);
         final TextView existsNote = findViewById(R.id.existsTextView);
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference groupRef = reference.child("group");
+        final DatabaseReference groupInRef = reference.child("group-in");
+        final DatabaseReference inGroupRef = reference.child("in-group");
+        final DatabaseReference newGroupRef = inGroupRef.push();
+        final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        final String groupKey = newGroupRef.getKey();
 
         groupEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -48,7 +58,8 @@ public class JoinGroupActivity extends AppCompatActivity {
                         if (dataSnapshot.exists()) {
                             alreadyInGroup();
                             if (!isInGroup) {
-
+                                inGroupRef.child(groupKey).child(userId).setValue(userName);
+                                groupInRef.child(userId).child(groupKey).setValue(dataSnapshot.child(groupKey).child("groupName").getValue().toString());
                             }
                         } else {
                             existsNote.setText("Invalid group code");
@@ -56,7 +67,7 @@ public class JoinGroupActivity extends AppCompatActivity {
                     }
 
                     private void alreadyInGroup() {
-                        inGroup.orderByChild(userId).orderByKey().equalTo(groupKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                        inGroup./*orderByChild(userId)*/orderByKey().equalTo(groupKey).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
