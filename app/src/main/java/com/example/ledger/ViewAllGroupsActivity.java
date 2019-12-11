@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,6 +36,14 @@ public class ViewAllGroupsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_all_groups);
 
         final ListView groupListView = findViewById(R.id.viewGroupsList);
+
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ViewAllGroupsActivity.this.finish();
+            }
+        });
 
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();

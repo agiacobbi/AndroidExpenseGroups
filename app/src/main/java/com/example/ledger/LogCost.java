@@ -91,6 +91,13 @@ public class LogCost extends AppCompatActivity {
                 EditText userDescription = findViewById(R.id.cost_description);
                 Spinner spinner = findViewById(R.id.group_selector);
                 Log.d(TAG, "in finishLogListener");
+                Button backButton = findViewById(R.id.backButton);
+                backButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        LogCost.this.finish();
+                    }
+                });
 
 
                 if (userInputCost.getText().toString().equals("") || userDescription.getText().toString().equals("")) {

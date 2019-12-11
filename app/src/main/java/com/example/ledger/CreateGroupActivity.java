@@ -39,7 +39,13 @@ public class CreateGroupActivity extends AppCompatActivity {
         final TextView groupIdView = findViewById(R.id.GroupIDLabel);
         final EditText groupName = findViewById(R.id.createGroupName);
         Button createButton = findViewById(R.id.createButton);
-
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CreateGroupActivity.this.finish();
+            }
+        });
         groupIdView.setText("Group ID: " + groupKey);
 
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -53,10 +59,11 @@ public class CreateGroupActivity extends AppCompatActivity {
                     groupRef.child(groupKey).setValue(group);
                     groupInRef.child(userId).child(groupKey).setValue(group.getGroupName());
                     inGroupRef.child(groupKey).child(userId).setValue(userName);
-                    finish();
+                    CreateGroupActivity.this.finish();
                 }
             }
         });
+
          
     }
 }

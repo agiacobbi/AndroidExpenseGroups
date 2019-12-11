@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -36,6 +38,13 @@ public class JoinGroupActivity extends AppCompatActivity {
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         final String groupKey = newGroupRef.getKey();
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                JoinGroupActivity.this.finish();
+            }
+        });
 
         groupEditText.addTextChangedListener(new TextWatcher() {
             @Override
