@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "382067777052-pfm8dcoh6m00v0gjae3d385ljhija916.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ledger",
+            "certificate_hash": "7b771759978e1007f0c7a951f38288f2bfa33132"
+          }
+        },
+        {
           "client_id": "382067777052-amj55mlj7d39ngflgf6n1hecaalb49jb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -36,7 +44,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "382067777052-a062ifm8p877dlqvgvculon1u7jba3rb.apps.googleusercontent.com",
+              "client_id": "382067777052-nqi6prcnudloks04ko6b4ispr4ue6rsc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

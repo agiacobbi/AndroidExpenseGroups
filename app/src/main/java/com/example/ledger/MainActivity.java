@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Log.d(TAG, "user: " + signedInUser.getEmail());
-                User user = dataSnapshot.getValue(User.class);
+                //User user = dataSnapshot.getValue(User.class);
             }
 
             @Override
@@ -186,6 +186,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, CreateGroupActivity.class);
                 startActivityForResult(intent, LOGIN_REQUEST_CODE);
                 return true;
+            case R.id.action_viewgroups:
+                Intent viewIntent = new Intent(MainActivity.this, ViewAllGroupsActivity.class);
+                startActivity(viewIntent);
             default:
                 return super.onOptionsItemSelected(item);
         }

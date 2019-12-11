@@ -2,21 +2,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.ledger.MainActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings_black_24dp"
-        android:orderInCategory="101"
-        android:title="@string/action_settings"
-        app:showAsAction="ifRoom" />
+
     <item
         android:id = "@+id/createGroup"
-        android:icon = "@drawable/ic_add_black_24dp"
-        android:title="Create Group"
-        app:showAsAction="always"/>
+        android:title="@string/create_group"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_viewgroups"
+        android:title="@string/view_groups"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_joingroup"
+        android:title="@string/join_group"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_signout"
-        android:orderInCategory="100"
-        android:title="Sign Out"
+        android:title="@string/sign_out"
         app:showAsAction="never" />
 
 </menu>

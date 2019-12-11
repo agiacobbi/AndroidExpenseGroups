@@ -8,6 +8,10 @@ public class Group implements Serializable {
     private String groupName;
     private List<User> userArrayList;
 
+    public Group() {
+        this.userArrayList = new ArrayList<>();
+    }
+
     public Group(String groupName, List<User> userArrayList) {
         this.groupName = groupName;
         this.userArrayList = userArrayList;
