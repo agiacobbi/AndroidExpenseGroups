@@ -317,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
             else if (resultCode == Activity.RESULT_CANCELED) {
                 // they backed out of the sign in activity
                 // let's exit
-                finish();
+                //finish();
             }
         }
         //Does not work after user signs in
