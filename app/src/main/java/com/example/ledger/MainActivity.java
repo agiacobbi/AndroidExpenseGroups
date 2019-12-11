@@ -116,7 +116,12 @@ public class MainActivity extends AppCompatActivity {
                 Cost cost = costList.get(position);
                 // set value(s) for the view and its subviews
                 TextView tv1 = view.findViewById(android.R.id.text1);
-                tv1.setText(cost.getUser()); // cloning what ArrayAdapter has been doing for us
+                if (cost.getUser().equals(FirebaseAuth.getInstance().getCurrentUser().getDisplayName())) {
+                    tv1.setText("You");
+                } else {
+                    tv1.setText(cost.getUser()); // cloning what ArrayAdapter has been doing for us
+                }
+
 
                 // task: set the name for text1 and set the phone number for text2
                 TextView tv2 = view.findViewById(android.R.id.text2);

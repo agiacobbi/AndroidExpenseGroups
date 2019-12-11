@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -39,6 +41,20 @@ public class ViewGroupActivity extends AppCompatActivity {
 
         TextView balanceView = findViewById(R.id.balanceText);
         final ListView membersListView = findViewById(R.id.memberList);
+
+
+        Button invite = findViewById(R.id.button);
+        invite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                String message = "UoMe! Join our group using this code: " + groupId;
+                // send a simple text message with some activity
+                intent.setType("text/plain"); // mime type (media)
+                intent.putExtra(Intent.EXTRA_TEXT, message);
+                startActivity(intent);
+            }
+        });
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -80,8 +96,6 @@ public class ViewGroupActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     private void calculateBalances() {
