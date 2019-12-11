@@ -7,7 +7,7 @@
     tools:context=".JoinGroupActivity">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/groupId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/joinGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
