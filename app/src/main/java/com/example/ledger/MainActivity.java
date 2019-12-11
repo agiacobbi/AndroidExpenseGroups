@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setupFirebase();
-        populateListView();
+        //populateListView();
     }
 
     private void populateListView() {
@@ -246,6 +246,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        populateListView();
+
     }
 
     @Override
