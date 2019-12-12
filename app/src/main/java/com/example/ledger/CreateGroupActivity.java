@@ -40,6 +40,9 @@ public class CreateGroupActivity extends AppCompatActivity {
         final EditText groupName = findViewById(R.id.createGroupName);
         Button createButton = findViewById(R.id.createButton);
         Button backButton = findViewById(R.id.backButton);
+        /**
+         * Back button used to back to main activity
+         */
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,6 +51,9 @@ public class CreateGroupActivity extends AppCompatActivity {
         });
         groupIdView.setText("Group ID: " + groupKey);
 
+        /**
+         * Creates a group and adds it to firebase database
+         */
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,7 +69,5 @@ public class CreateGroupActivity extends AppCompatActivity {
                 }
             }
         });
-
-         
     }
 }

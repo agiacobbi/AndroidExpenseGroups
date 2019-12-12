@@ -26,6 +26,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity to log a cost and add it to the list
+ *
+ */
 public class LogCost extends AppCompatActivity {
 
 //    final EditText userInputCost = findViewById(R.id.cost_name);

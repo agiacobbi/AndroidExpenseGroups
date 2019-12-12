@@ -25,6 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This activity is used to display content in a group
+ */
 public class ViewGroupActivity extends AppCompatActivity {
 
     String currentUserName;

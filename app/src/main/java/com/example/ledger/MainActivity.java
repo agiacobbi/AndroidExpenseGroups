@@ -49,6 +49,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * CPSC 312-01, Fall 2019
+ * Final Project
+ * @author Alex Giacobbi and Jalen Tacsiat
+ * @version v1.0 12/11/2019
+ *
+ * Alex contributions:
+ * Designed database structure
+ * Connected Firebase Realtime Database to app views
+ * Implemented Log Cost, Create Group, View Groups, and Cost Feed
+ *
+ * Jalen Contributions:
+ * Connected App to firebase
+ * Created Classes
+ * Created layouts
+ * Implemented Join Group function
+ * Implemented login using FirebaseUI
+ *
+ *
+ */
 public class MainActivity extends AppCompatActivity {
     static final String TAG = "MainActivityTag";
     static final int SIGN_IN_REQUEST = 1;
@@ -92,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         //populateListView();
     }
 
+    //Adds list of cost to mainActivity listView
     private void populateListView() {
         ListView costListView = findViewById(R.id.expensesList);
         final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -185,6 +206,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Connects app to firebase
+     * Sets ups firebase authentification
+     * Adds user to firebase realtime database
+     */
     private void setupFirebase(){
         mFirebaseDataBase = FirebaseDatabase.getInstance();
         databaseReference = mFirebaseDataBase.getReference().child("users");

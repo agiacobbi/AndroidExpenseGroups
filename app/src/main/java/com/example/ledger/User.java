@@ -1,5 +1,8 @@
 package com.example.ledger;
 
+/**
+ * Class used to contain a user's information
+ */
 public class User {
     private String username;
     private String email;
